@@ -1,6 +1,6 @@
 # CentOS KVM Image Tools
 
-Some simple tools, instructions and images to assist with creating CentOS KVM virtual machines. 
+Some simple tools, instructions and images to assist with creating CentOS KVM virtual machines. The following guide assumes you have virtualisation tools such as virt-install and libguestfs tools such as virt-sparsify installed.
 
 ## Installation examples using virt-install
 
@@ -28,9 +28,9 @@ If you want to delete the virtual machine, you can do so with:
     virsh undefine centos6x-vm-gpt
     rm /var/lib/libvirt/images/centos6x-vm-gpt.img
 
-## Creating a CentOS Golden Master Image    
+### Creating a CentOS Golden Master Image    
 
-1) Install a fresh image
+1) Install a fresh virtual machine that will become our base image
 
     virt-install \
     --name "centos6.3-gold" \
@@ -42,13 +42,31 @@ If you want to delete the virtual machine, you can do so with:
     --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/centos6x-vm-gpt.cfg text console=tty0 utf8 console=ttyS0,115200" \
     --disk path=/var/lib/libvirt/images/centos6.3-gold.img,size=10,bus=virtio,format=qcow2
 
-2) Apply the latest package updates from yum…
+2) Make sure you are inside the new guest, then apply the latest package updates from yum…
     
     yum update
     reboot
     
-3) Remove any old kernels to free up some space (assuming the kernel was updated in the previous step)s
+3) The guest should have rebooted, once it comes back up - log in, and then remove any old kernels to free up some space (assuming the kernel was updated in the previous step
 
     yum remove $(rpm -q kernel | grep -v `uname -r`)
     
-  
+4) Run the create gold master bash script to remove MAC address references etc.. then shut it down
+
+    wget https://raw.github.com/fubralimited/CentOS-KVM-Image-Tools/master/scripts/create-gold-master.sh;
+    bash create-gold-master.sh
+    shutdown -h now
+    
+5) From the hypervisor sparsify and compress the VM image
+
+    cd /var/lib/libvirt/images/;
+    virt-sparsify centos6.3-gold.img centos6.3-gold.img-sparsified
+    qemu-img convert -c -p -f qcow2 -O qcow2 centos6.3-gold.img-sparsified centos6.3-gold-master.img
+    
+### Creating a new guest using a copy of the Golden Master image
+
+Coming soon...
+
+### Creating a new guest using the Golden Master as a backing image
+
+Coming soon...
