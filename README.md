@@ -96,3 +96,9 @@ Create a new guest using this image with virt-install --import
     --os-variant=rhel6 \
     --disk path=/var/lib/libvirt/images/centos6.3-gold-copy2-master-backed.img \
     --import
+
+## Working with images
+
+### Resizing a virtual machine image
+
+Coming soon...
