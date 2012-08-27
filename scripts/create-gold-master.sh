@@ -8,7 +8,7 @@ fi
 
 read -p "***** Warning! ****** 
 This script will remove all MAC address and hostname references from network scripts, and reset the SSH host keys and DHCP lease history. 
-Do you wish to continue? " -n 1 -r
+Do you wish to continue? "
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then

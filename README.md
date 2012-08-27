@@ -27,3 +27,6 @@ If you want to delete the virtual machine, you can do so with:
     virsh destroy centos6x-vm-gpt
     virsh undefine centos6x-vm-gpt
     rm /var/lib/libvirt/images/centos6x-vm-gpt.img
+    
+### Create a CentOS 6.3 Golden Master Image
+
