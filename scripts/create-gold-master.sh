@@ -1,12 +1,14 @@
 #!/bin/bash
 
 # Ensure script is being run as root
-if if [ `whoami` != root ]; then
+if [ `whoami` != root ]; then
    echo "This script must be run as root" 1>&2
    exit 1
 fi
 
-read -p "Warning! This script will remove all MAC address and hostname references from network scripts, and reset the SSH host keys and DHCP lease history. Do you wish to continue? " -n 1 -r
+read -p "***** Warning! ****** 
+This script will remove all MAC address and hostname references from network scripts, and reset the SSH host keys and DHCP lease history. 
+Do you wish to continue? " -n 1 -r
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
