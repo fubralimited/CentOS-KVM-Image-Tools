@@ -27,6 +27,28 @@ If you want to delete the virtual machine, you can do so with:
     virsh destroy centos6x-vm-gpt
     virsh undefine centos6x-vm-gpt
     rm /var/lib/libvirt/images/centos6x-vm-gpt.img
-    
-### Create a CentOS 6.3 Golden Master Image
 
+## Creating a CentOS Golden Master Image    
+
+1) Install a fresh image
+
+    virt-install \
+    --name "centos6.3-gold" \
+    --ram 1024 \
+    --nographics \
+    --os-type=linux \
+    --os-variant=rhel6 \
+    --location=http://mirror.catn.com/pub/centos/6/os/x86_64 \
+    --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/centos6x-vm-gpt.cfg text console=tty0 utf8 console=ttyS0,115200" \
+    --disk path=/var/lib/libvirt/images/centos6.3-gold.img,size=10,bus=virtio,format=qcow2
+
+2) Apply the latest package updates from yum…
+    
+    yum update
+    reboot
+    
+3) Remove any old kernels to free up some space (assuming the kernel was updated in the previous step)s
+
+    yum remove $(rpm -q kernel | grep -v `uname -r`)
+    
+  
