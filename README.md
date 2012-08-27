@@ -65,8 +65,32 @@ If you want to delete the virtual machine, you can do so with:
     
 ### Creating a new guest using a copy of the Golden Master image
 
-Coming soon...
+Copy the image
+
+    cp centos6.3-gold-master.img centos6.3-gold-copy1-nobacking.img
+    
+Create a new guest using this image with virt-install --import
+
+    virt-install \
+    --name centos6.3-gold-copy1-nobacking \
+    --ram 1024 \
+    --os-type=linux \
+    --os-variant=rhel6 \
+    --disk path=/var/lib/libvirt/images/centos6.3-gold-copy1-nobacking.img \
+    --import
 
 ### Creating a new guest using the Golden Master as a backing image
 
-Coming soon...
+Create a new image using qemu-img that specifies the master as the backing image
+
+    qemu-img create -f qcow2 -b /var/lib/libvirt/images/centos6.3-gold-master.img /var/lib/libvirt/images/centos6.3-gold-copy2-master-backed.img
+
+Create a new guest using this image with virt-install --import
+
+    virt-install \
+    --name centos6.3-gold-copy2-master-backed \
+    --ram 1024 \
+    --os-type=linux \
+    --os-variant=rhel6 \
+    --disk path=/var/lib/libvirt/images/centos6.3-gold-copy2-master-backed.img \
+    --import
