@@ -15,7 +15,7 @@ This command will perform a text-based installation of the latest CentOS release
     --os-type=linux \
     --os-variant=rhel6 \
     --location=http://mirror.catn.com/pub/centos/6/os/x86_64 \
-    --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/centos6.x-vm-gpt.cfg text console=tty0 utf8 console=ttyS0,115200" \
+    --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/centos6x-vm-gpt.cfg text console=tty0 utf8 console=ttyS0,115200" \
     --disk path=/var/lib/libvirt/images/centos6x-vm-gpt.img,size=10,bus=virtio,format=qcow2
     
 Once the installation is complete, you can connect to the virtual machine's console with:
