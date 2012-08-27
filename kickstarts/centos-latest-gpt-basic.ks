@@ -16,7 +16,7 @@ reboot
 
 url --url=http://mirror.catn.com/pub/centos/6/os/x86_64
 repo --name="CATN Centos Repo" --baseurl=http://mirror.catn.com/pub/centos/6/os/x86_64
-network --bootproto=dhcp --hostname=test-centos6-gpt3 --device=eth0 --onboot=on
+network --bootproto=dhcp --hostname=centos-latest-gpt-basic --device=eth0 --onboot=on
 
 # Clear the Master Boot Record
 zerombr
