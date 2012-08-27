@@ -2,7 +2,7 @@
 
 Some simple tools, instructions and images to assist with creating CentOS KVM virtual machines. The following guide assumes you have virtualisation tools such as virt-install and libguestfs tools such as virt-sparsify installed.
 
-## Installation examples using virt-install
+## Testing virt-install
 
 ### Simple CentOS 6.x install from a remote HTTP kickstart file, using GUID partition tables
 
@@ -27,6 +27,8 @@ If you want to delete the virtual machine, you can do so with:
     virsh destroy centos6x-vm-gpt
     virsh undefine centos6x-vm-gpt
     rm /var/lib/libvirt/images/centos6x-vm-gpt.img
+
+## CentOS 6.x Gold Master Image
 
 ### Creating a CentOS Golden Master Image    
 
