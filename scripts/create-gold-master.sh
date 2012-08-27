@@ -6,7 +6,7 @@ if if [ `whoami` != root ]; then
    exit 1
 fi
 
-read -p "Warning! This script will remove all MAC addresses from network scripts, and reset SSH host keys. Do you wish to continue? " -n 1 -r
+read -p "Warning! This script will remove all MAC address and hostname references from network scripts, and reset the SSH host keys and DHCP lease history. It will also disable SSH Password Authentication. Do you wish to continue? " -n 1 -r
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
@@ -25,7 +25,5 @@ then
     rm -f /root/.ssh/known_hosts
     # Secure SSH login to remove password authentication - key based login only
     sed -i -e 's/^\(PasswordAuthentication\) yes/\1 no/' /etc/ssh/sshd_config
-    # Update it to the latest versions..
-    yum -y update
 fi
 
