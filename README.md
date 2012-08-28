@@ -1,6 +1,6 @@
 # CentOS KVM Image Tools
 
-Some simple tools, instructions and images to assist with creating CentOS KVM virtual machines. The following guide assumes you have virtualisation tools such as virt-install and libguestfs-tools such as virt-sparsify, virt-sysprep and guestmount installed.
+Some simple tools, instructions and images to assist with creating CentOS KVM virtual machines. The following guide assumes you have virtualisation tools such as virt-install and libguestfs tools such as virt-sparsify installed.
 
 ## Testing virt-install
 
@@ -53,10 +53,11 @@ If you want to delete the virtual machine, you can do so with:
 
     yum remove $(rpm -q kernel | grep -v `uname -r`)
     
-4) Shutdown the host, then run virt-sysprep from the hypervisor to unconfigure the virtual machine so clones can be made from it (remove MAC address references etc..)
+4) Run the create gold master bash script to remove MAC address references etc.. then shut it down
 
+    wget https://raw.github.com/fubralimited/CentOS-KVM-Image-Tools/master/scripts/create-gold-master.sh;
+    bash create-gold-master.sh
     shutdown -h now
-    virt-sysprep -a /var/lib/libvirt/images/centos6.3-gold.img
     
 5) From the hypervisor sparsify and compress the VM image
 
