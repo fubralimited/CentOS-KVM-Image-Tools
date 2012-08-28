@@ -46,7 +46,7 @@ If you want to delete the virtual machine, you can do so with:
 
 2) Make sure you are inside the new guest, then apply the latest package updates from yum…
     
-    yum update
+    yum -y update
     reboot
     
 3) The guest should have rebooted, once it comes back up - log in, and then remove any old kernels to free up some space (assuming the kernel was updated in the previous step
