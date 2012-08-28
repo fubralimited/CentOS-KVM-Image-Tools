@@ -12,6 +12,12 @@ Do you wish to continue? "
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
+    # Clear out logs
+    for F in /var/log/{cron,dmesg,dmesg.old,lastlog,maillog,messages,secure,wtmp,audit/*}
+    do
+      echo -n >\$F
+    done
+    rm -f /var/log/sa/*
     # Remove hostname references...
     sed -i '/HOSTNAME/d' /etc/sysconfig/network
     sed -i '/HOSTNAME/d' /etc/sysconfig/network-scripts/ifcfg-eth0
