@@ -76,8 +76,10 @@ Whereas if you are running Centos 6.3 as the hypervisor (with the newer version 
 5) From the hypervisor sparsify and compress the VM image
 
     cd /var/lib/libvirt/images/;
-    virt-sparsify centos6.3-gold.img centos6.3-gold.img-sparsified
+    virt-sparsify --format qcow2 --convert qcow2 centos6.3-gold.img centos6.3-gold.img-sparsified
     qemu-img convert -c -p -f qcow2 -O qcow2 centos6.3-gold.img-sparsified centos6.3-gold-master.img
+    
+In theory virt-sparsify should not need the --format and --convert arguments if you want to preserve the format as it should be able to auto-detect, but it seems the auto-detection doesn't always work (works on Ubuntu Precise, but not on Centos 6.3).
     
 ### Creating a new guest using a copy of the Golden Master image
 
