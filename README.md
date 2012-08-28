@@ -53,11 +53,21 @@ If you want to delete the virtual machine, you can do so with:
 
     yum remove $(rpm -q kernel | grep -v `uname -r`)
     
-4) Run the create gold master bash script to remove MAC address references etc.. then shut it down
+4) Run the create gold master bash script to remove MAC address references etc.. then shut it down.
+
+Note: If you are using a newer version of libguestfs-tools then you could try using virt-sysprep -a imagename instead of the create-gold-master.sh script. It seems there is a bug with the earlier versions, like the one shipped with Ubuntu precise, whereby it wouldn't detect rhel OS types, and therefore doesn't run the parts to wipe the hostname or remote the mac addresses references - https://bugzilla.redhat.com/show_bug.cgi?id=811112.
+
+So if you are using Ubuntu Precise as your hypervisor, run the following commands from within the guest.
 
     wget https://raw.github.com/fubralimited/CentOS-KVM-Image-Tools/master/scripts/create-gold-master.sh;
     bash create-gold-master.sh
     shutdown -h now
+    
+Whereas if you are running Centos 6.3 as the hypervisor (with the newer version of libguestfs-tools), you can run
+
+    shutdown -h now
+    virt-sysprep -a /var/lib/libvirt/images/centos6.3-gold.img
+    
     
 5) From the hypervisor sparsify and compress the VM image
 
