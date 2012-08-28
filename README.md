@@ -4,7 +4,7 @@ Some simple tools, instructions and images to assist with creating CentOS KVM vi
 
     yum install libguestfs-tools
     
-Or the equivalent command for your distribution of choice.
+…or the equivalent command for your distribution of choice.
 
 ## Testing virt-install
 
