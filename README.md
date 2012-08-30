@@ -117,9 +117,9 @@ Create a new guest using this image with virt-install --import
 
 ### Resizing a virtual machine image
 
-Create a new guest with a different size to the original master image is fairly straightforward. 
+Creating a new guest with a different size to the original master image is fairly straightforward. 
 
-Firstly create a new image file, with the correct size you would like
+Firstly create a new empty image file, with the correct size you would like
 
     qemu-img create -f qcow2 centos6.3-gold-resized-20G.img 20G
 
