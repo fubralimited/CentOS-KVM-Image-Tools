@@ -136,4 +136,34 @@ Then import this new image into KVM as normal
     --os-variant=rhel6 \
     --disk path=/var/lib/libvirt/images/centos6.3-gold-resized-20G.img \
     --import
+    
+### Adding VNC graphics 
 
+If you want to add a graphical VNC console to an existing guest that doesn't currently have one set up, you can do so by editing the domain xml and adding a graphics line. Any time you change the XML config, you need to run the virsh define command again. 
+
+Shutdown the guest
+
+    virsh shutdown centos6.3-gold-resized-20G
+
+Edit the XML file
+
+    vim /etc/libvirt/qemu/centos6.3-gold-resized-20G.xml
+
+Add the following line in the devices section
+
+    <graphics type='vnc' port='-1' autoport='yes'/>
+    
+Import the updated guest xml configuration
+
+    virsh define /etc/libvirt/qemu/centos6.3-gold-resized-20G.xml
+     
+Start the guest
+    
+    virsh start centos6.3-gold-resized-20G
+    
+If you are connected over SSH, make sure you have X11 installed on your client machine, and that you connected with X11 forwarding enabled (e.g. ssh -x). You should then be able to connect to the VNC graphical console with
+
+    virt-viewer centos6.3-gold-resized-20G
+    
+
+    
