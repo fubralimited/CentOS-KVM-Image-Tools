@@ -55,7 +55,7 @@ If you want to delete the virtual machine, you can do so with:
     
 3) The guest should have rebooted, once it comes back up - log in, and then remove any old kernels to free up some space (assuming the kernel was updated in the previous step
 
-    yum remove $(rpm -q kernel | grep -v `uname -r`)
+    yum remove $(rpm -q kernel | fgrep -v `uname -r`)
     
 4) Run the create gold master bash script to remove MAC address references etc.. then shut it down.
 
