@@ -200,4 +200,10 @@ If you are connected over SSH, make sure you have X11 installed on your client m
     --location=http://mirror.ox.ac.uk/sites/download.fedora.redhat.com/pub/fedora/linux/releases/test/18-Alpha/Fedora/x86_64/os/ \
     --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/fedora18-alpha-guest.cfg text console=tty0 utf8 console=ttyS0,115200" \
     --disk path=/var/lib/libvirt/images/fedora18-alpha-guest.img,size=10,bus=virtio,format=qcow2
+    
+#### Errors with Fedora 18 install
+
+A useful tip for switching Anaconda shells is to use CTRL+b then the screen number.
+
+* Hangs after %pre with - No FCoE EDD info found: No FCoE boot disk information is found in EDD! (using GPT)
 
