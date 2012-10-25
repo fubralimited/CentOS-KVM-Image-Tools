@@ -180,4 +180,24 @@ If you are connected over SSH, make sure you have X11 installed on your client m
     --location=http://mirror.ox.ac.uk/sites/download.fedora.redhat.com/pub/fedora/linux/releases/17/Fedora/x86_64/os/ \
     --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/fedora17-guest.cfg text console=tty0 utf8 console=ttyS0,115200" \
     --disk path=/var/lib/libvirt/images/fedora17-guest.img,size=10,bus=virtio,format=qcow2
+    
+#### Errors with Fedora 17 install
+
+* Complained about %pre and %packages not having an %end - fixed
+* Error: 'you have not created a bootloader stage1 target device' - possibly because we are using EFI / GPT labels - https://bugzilla.redhat.com/show_bug.cgi?id=752063
+* dracut Warning: 'method=' is deprecated. Using 'repo=blah' instead 
+* curl: (22) The requested URL returned error: 404 - probably related to above error
+
+
+### Fedora 18 Alpha
+
+    virt-install \
+    --name "fedora18-alpha-guest" \
+    --ram 1024 \
+    --nographics \
+    --os-type=linux \
+    --os-variant=rhel6 \
+    --location=http://mirror.ox.ac.uk/sites/download.fedora.redhat.com/pub/fedora/linux/releases/test/18-Alpha/Fedora/x86_64/os/ \
+    --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/fedora18-alpha-guest.cfg text console=tty0 utf8 console=ttyS0,115200" \
+    --disk path=/var/lib/libvirt/images/fedora18-alpha-guest.img,size=10,bus=virtio,format=qcow2
 
