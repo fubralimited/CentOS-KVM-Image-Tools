@@ -205,5 +205,5 @@ If you are connected over SSH, make sure you have X11 installed on your client m
 
 A useful tip for switching Anaconda shells is to use CTRL+b then the screen number.
 
-* Hangs after %pre with - No FCoE EDD info found: No FCoE boot disk information is found in EDD! (using GPT)
+* Hangs after %pre with - No FCoE EDD info found: No FCoE boot disk information is found in EDD! (using GPT) - https://bugzilla.redhat.com/show_bug.cgi?id=729640
 
