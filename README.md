@@ -221,3 +221,7 @@ A useful tip for switching Anaconda shells is to use CTRL+b then the screen numb
 
 * Hangs after %pre with - No FCoE EDD info found: No FCoE boot disk information is found in EDD! (using GPT) - https://bugzilla.redhat.com/show_bug.cgi?id=729640
 
+* dracut-pre-pivot[559]: mount: wrong fs type, bad option, bad superblock on /var/lib/nfs/rpc_pipefs,
+
+* ERR program: FATAL: Module scsi_wait_scan not found. - https://bugzilla.redhat.com/show_bug.cgi?id=861940
+
