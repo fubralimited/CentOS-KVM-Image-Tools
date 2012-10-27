@@ -199,7 +199,7 @@ Without GPT:
     --nographics \
     --os-type=linux \
     --os-variant=rhel6 \
-    --location=http://mirror.ox.ac.uk/sites/download.fedora.redhat.com/pub/fedora/linux/releases/test/18-Alpha/Fedora/x86_64/os/ \
+    --location=http://dl.fedoraproject.org/pub/alt/stage/18-Beta-TC6/Fedora/x86_64/os/ \
     --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/fedora18-alpha-guest.cfg text console=tty0 utf8 console=ttyS0,115200" \
     --disk path=/var/lib/libvirt/images/fedora18-alpha-guest.img,size=10,bus=virtio,format=qcow2
     
@@ -211,7 +211,7 @@ With GPT:
     --nographics \
     --os-type=linux \
     --os-variant=rhel6 \
-    --location=http://mirror.ox.ac.uk/sites/download.fedora.redhat.com/pub/fedora/linux/releases/test/18-Alpha/Fedora/x86_64/os/ \
+    --location=http://dl.fedoraproject.org/pub/alt/stage/18-Beta-TC6/Fedora/x86_64/os/ \
     --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/fedora18-alpha-guest-gpt.cfg text console=tty0 utf8 console=ttyS0,115200" \
     --disk path=/var/lib/libvirt/images/fedora18-alpha-guest.img,size=10,bus=virtio,format=qcow2
     
