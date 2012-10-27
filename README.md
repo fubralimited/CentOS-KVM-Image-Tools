@@ -215,7 +215,7 @@ With GPT:
     --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/fedora18-alpha-guest-gpt.cfg text console=tty0 utf8 console=ttyS0,115200" \
     --disk path=/var/lib/libvirt/images/fedora18-alpha-guest.img,size=10,bus=virtio,format=qcow2
     
-#### Errors with Fedora 18 install
+#### Errors with Fedora 18 Alpha install
 
 A useful tip for switching Anaconda shells is to use CTRL+b then the screen number.
 
@@ -224,4 +224,7 @@ A useful tip for switching Anaconda shells is to use CTRL+b then the screen numb
 * dracut-pre-pivot[559]: mount: wrong fs type, bad option, bad superblock on /var/lib/nfs/rpc_pipefs,
 
 * ERR program: FATAL: Module scsi_wait_scan not found. - https://bugzilla.redhat.com/show_bug.cgi?id=861940
+
+### Fedora 18 Beta
+
 
