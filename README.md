@@ -227,4 +227,14 @@ A useful tip for switching Anaconda shells is to use CTRL+b then the screen numb
 
 ### Fedora 18 Beta
 
+Without GPT:
 
+    virt-install \
+    --name "fedora18-beta-guest" \
+    --ram 1024 \
+    --nographics \
+    --os-type=linux \
+    --os-variant=rhel6 \
+    --location=http://dl.fedoraproject.org/pub/alt/stage/18-Beta-TC6/Fedora/x86_64/os/ \
+    --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/fedora18-beta-guest.cfg text console=ttyS0,115200" \
+    --disk path=/var/lib/libvirt/images/fedora18-beta-guest.img,size=10,bus=virtio,format=qcow2
