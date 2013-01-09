@@ -2,6 +2,7 @@
 
 Some simple tools, instructions and images to assist with creating CentOS KVM virtual machines. The following guide assumes you have virtualisation tools such as virt-install and libguestfs tools such as virt-sparsify installed. If you don't, then install them with...
 
+    yum groupinstall "Virtualization Tools"
     yum install libguestfs-tools
     
 …or the equivalent command for your distribution of choice.
