@@ -4,6 +4,7 @@ Some simple tools, instructions and images to assist with creating CentOS KVM vi
 
     yum groupinstall "Virtualization Tools"
     yum install virt-manager libvirt libvirt-python python-virtinst virt-top libguestfs-tools
+    reboot
     
 …or the equivalent command for your distribution of choice.
 
