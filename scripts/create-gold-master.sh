@@ -32,5 +32,5 @@ then
     rm -f /etc/ssh/ssh_host_*
     rm -f /root/.ssh/known_hosts
     # Disable SSH password authentication
-    perl -p -i -e 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+    #perl -p -i -e 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 fi
