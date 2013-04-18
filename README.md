@@ -48,7 +48,7 @@ If you want to delete the virtual machine, you can do so with:
     --os-variant=rhel6 \
     --location=http://mirror.catn.com/pub/centos/6/os/x86_64 \
     --extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/centos6x-vm-gpt-selinux.cfg text console=tty0 utf8 console=ttyS0,115200" \
-    --disk path=/var/lib/libvirt/images/centos6.3-gold.img,size=10,bus=virtio,format=qcow2
+    --disk path=/var/lib/libvirt/images/centos6x-vm-gpt.img,size=10,bus=virtio,format=qcow2
 
 2) Make sure you are inside the new guest, then apply the latest package updates from yum…
     
@@ -120,20 +120,20 @@ Creating a new guest with a different size to the original master image is fairl
 
 Firstly create a new empty image file, with the correct size you would like
 
-    qemu-img create -f qcow2 centos6.3-gold-resized-20G.img 20G
+    qemu-img create -f qcow2 centos6x-vm-gpt-gold-resized-20G.img 20G
 
 Then run virt-resize to make a copy from another virtual machine image and expand the partitions within it to the size of the new image.
 
-    virt-resize --expand /dev/vda2 --LV-expand /dev/vg_main/lv_root centos6.3-gold-master.img centos6.3-gold-resized-20G.img
+    virt-resize --expand /dev/vda2 --LV-expand /dev/vg_main/lv_root centos6x-vm-gpt-gold-master.img centos6x-vm-gpt-gold-resized-20G.img
     
 Then import this new image into KVM as normal
 
     virt-install \
-    --name centos6.3-gold-resized-20G \
+    --name centos6x-vm-gpt-gold-resized-20G \
     --ram 1024 \
     --os-type=linux \
     --os-variant=rhel6 \
-    --disk path=/var/lib/libvirt/images/centos6.3-gold-resized-20G.img \
+    --disk path=/var/lib/libvirt/images/centos6x-vm-gpt-gold-resized-20G.img \
     --import
     
 ### Adding VNC graphics 
@@ -142,11 +142,11 @@ If you want to add a graphical VNC console to an existing guest that doesn't cur
 
 Shutdown the guest
 
-    virsh shutdown centos6.3-gold-resized-20G
+    virsh shutdown centos6x-vm-gpt-gold-resized-20G
 
 Edit the XML file
 
-    vim /etc/libvirt/qemu/centos6.3-gold-resized-20G.xml
+    vim /etc/libvirt/qemu/centos6x-vm-gpt-gold-resized-20G.xml
 
 Add the following line in the devices section
 
@@ -154,15 +154,15 @@ Add the following line in the devices section
     
 Import the updated guest xml configuration
 
-    virsh define /etc/libvirt/qemu/centos6.3-gold-resized-20G.xml
+    virsh define /etc/libvirt/qemu/centos6x-vm-gpt-gold-resized-20G.xml
      
 Start the guest
     
-    virsh start centos6.3-gold-resized-20G
+    virsh start centos6x-vm-gpt-gold-resized-20G
     
 If you are connected over SSH, make sure you have X11 installed on your client machine, and that you connected with X11 forwarding enabled (e.g. ssh -x). You should then be able to connect to the VNC graphical console with
 
-    virt-viewer centos6.3-gold-resized-20G
+    virt-viewer centos6x-vm-gpt-gold-resized-20G
     
 
     
