@@ -89,7 +89,7 @@ Copy the image
 Create a new guest using this image with virt-install --import
 
     virt-install \
-    --name "centos6x-vm-gpt-gold-copy1-nobacking.img" \
+    --name "centos6x-vm-gpt-gold-copy1-nobacking" \
     --ram 1024 \
     --os-type=linux \
     --os-variant=rhel6 \
@@ -105,7 +105,7 @@ Create a new image using qemu-img that specifies the master as the backing image
 Create a new guest using this image with virt-install --import
 
     virt-install \
-    --name centos6.3-gold-copy2-master-backed \
+    --name "centos6x-vm-gpt-gold-copy2-master-backed" \
     --ram 1024 \
     --os-type=linux \
     --os-variant=rhel6 \
