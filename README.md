@@ -75,8 +75,8 @@ If you want to delete the virtual machine, you can do so with:
 5) From the hypervisor sparsify and compress the VM image
 
     cd /var/lib/libvirt/images/;
-    virt-sparsify --format qcow2 --convert qcow2 centos6.3-gold.img centos6.3-gold.img-sparsified
-    qemu-img convert -c -p -f qcow2 -O qcow2 centos6.3-gold.img-sparsified centos6.3-gold-master.img
+    virt-sparsify --format qcow2 --convert qcow2 centos6x-vm-gpt.img centos6x-vm-gpt.img-sparsified
+    qemu-img convert -c -p -f qcow2 -O qcow2 centos6x-vm-gpt.img-sparsified centos6x-vm-gpt-gold-master.img
     
 In theory virt-sparsify should not need the --format and --convert arguments if you want to preserve the format as it should be able to auto-detect, but it seems the auto-detection doesn't always work (works on Ubuntu Precise, but not on Centos 6.3).
     
@@ -84,23 +84,23 @@ In theory virt-sparsify should not need the --format and --convert arguments if 
 
 Copy the image
 
-    cp centos6.3-gold-master.img centos6.3-gold-copy1-nobacking.img
+    cp centos6x-vm-gpt-gold-master.img centos6x-vm-gpt-gold-copy1-nobacking.img
     
 Create a new guest using this image with virt-install --import
 
     virt-install \
-    --name centos6.3-gold-copy1-nobacking \
+    --name "centos6x-vm-gpt-gold-copy1-nobacking.img" \
     --ram 1024 \
     --os-type=linux \
     --os-variant=rhel6 \
-    --disk path=/var/lib/libvirt/images/centos6.3-gold-copy1-nobacking.img \
+    --disk path=/var/lib/libvirt/images/centos6x-vm-gpt-gold-copy1-nobacking.img \
     --import
 
 ### Creating a new guest using the Golden Master as a backing image
 
 Create a new image using qemu-img that specifies the master as the backing image
 
-    qemu-img create -f qcow2 -b /var/lib/libvirt/images/centos6.3-gold-master.img /var/lib/libvirt/images/centos6.3-gold-copy2-master-backed.img
+    qemu-img create -f qcow2 -b /var/lib/libvirt/images/centos6x-vm-gpt-gold-master.img /var/lib/libvirt/images/centos6x-vm-gpt-gold-copy2-master-backed.img
 
 Create a new guest using this image with virt-install --import
 
@@ -109,7 +109,7 @@ Create a new guest using this image with virt-install --import
     --ram 1024 \
     --os-type=linux \
     --os-variant=rhel6 \
-    --disk path=/var/lib/libvirt/images/centos6.3-gold-copy2-master-backed.img \
+    --disk path=/var/lib/libvirt/images/centos6x-vm-gpt-gold-copy2-master-backed.img \
     --import
 
 ## Working with images
