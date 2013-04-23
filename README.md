@@ -5,7 +5,7 @@ CentOS KVM Image Tools - README
 
 + Version: 1.0.000
 
-+ Release date: 2013-04-22
++ Release date: 2013-04-23
 
 + Author: Nicola Asuni, Paul Maunders, Mark Sutton
 
@@ -56,6 +56,8 @@ The kickstarts directory contains different Kickstart configuration files to cre
 
 ## Scripts
 
+### centoskvm.sh
+
 The centoskvm.sh shell script that you can use to create a master CentOS virtual machine in an unattended mode.
 This command will perform a text-based installation of the latest CentOS release directly from a public HTTP mirror without requiring any installation CD/DVD.
 A virtual machine will be created with the given settings, and output from the installation will be sent to your terminal rather than a VNC session.
@@ -69,16 +71,125 @@ Fell free to create new configuration files and clone the centoskvm.sh script to
 
 The main operation performed by the centoskvm.sh script are:
 
- * virt-install : creating the VM using virt-install;
- * virt-sysprep : reset, unconfigure the virtual machine so clones can be made;
- * guestfish : used for SElinux relabelling of the entire filesystem;
- * virt-sparsify : make a virtual machine disk sparse;
+#### 1. virt-install : creating the VM using virt-install
+
+The script uses the following parameters to create the VM:
+
+	virt-install \
+	--name centos_vm \
+	--ram 512 \
+	--cpu host \
+	--vcpus 1 \
+	--nographics \
+	--os-type=linux \
+	--os-variant=rhel6 \
+	--location=http://mirror.catn.com/pub/centos/6/os/x86_64 \
+	--initrd-inject=../kickstarts/centos6x-vm-gpt-selinux.cfg \
+	--extra-args="ks=file:/centos6x-vm-gpt-selinux.cfg text console=tty0 utf8 console=ttyS0,115200" \
+	--disk path=/var/lib/libvirt/images/centos_vm.qcow2,size=10,bus=virtio,format=qcow2 \
+	--force \
+	--noreboot 
+
+On this first example the Kickstart configuration is a local file injected via the "initrd-inject" parameter.
+Is it also possible to pass the Kickstart file as URL:
+
+	virt-install \
+	--name centos_vm \
+	--ram 512 \
+	--cpu host \
+	--vcpus 1 \
+	--nographics \
+	--os-type=linux \
+	--os-variant=rhel6 \
+	--location=http://mirror.catn.com/pub/centos/6/os/x86_64 \
+	--extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/centos6x-vm-gpt-selinux.cfg text console=tty0 utf8 console=ttyS0,115200" \
+	--disk path=/var/lib/libvirt/images/centos_vm.qcow2,size=10,bus=virtio,format=qcow2 \
+	--force \
+	--noreboot 
+
+The image created in this way has the default network settings (DHCP), it is fully updated and is not started.
+Please check the Kickstart configuration file source code for more information and options.
+
+#### 2. virt-sysprep : reset, unconfigure the virtual machine so clones can be made
+
+	cd /var/lib/libvirt/images/
+	virt-sysprep --no-selinux-relabel -a centos_vm.qcow2
+
+
+#### 3. guestfish : used for SElinux relabelling of the entire filesystem
+
+	guestfish --selinux -i $IMGNAME.$EXT <<EOF
+	sh load_policy
+	sh 'restorecon -Rv /'
+	EOF
+
+
+#### 4. virt-sparsify : make a virtual machine disk sparse
+
+	virt-sparsify --format qcow2 --compress centos_vm.qcow2 centos_vm-sparsified.qcow2
+	
+rename file and set the correct ownership
+
+	rm -rf centos_vm.qcow2
+	mv centos_vm-sparsified.qcow2 centos_vm.qcow2
+	chown qemu:qemu centos_vm.qcow2
+
 
 Please check the centoskvm.sh script for further details and configurations.
 
 Once the centoskvm.sh scripts completes, the requested image file will be available on the /var/lib/libvirt/images directory.
 
+### resizevm.sh
+
 The resizevm.sh allows you to resize a VM created with the centoskvm.sh script. The resizing process is detailed below.
+
+#### Resizing a virtual machine image
+
+The following instructions shows how to resize a virtual machine image:
+
+shut the virtual machine down
+
+	virsh shutdown centos_vm
+	
+change directory
+
+	cd /var/lib/libvirt/images
+
+clone VM image
+
+	cp -f centos_vm.qcow2 centos_vm_temp.qcow2
+
+resize the cloned image (i.e. 20 GB)
+
+	qemu-img resize centos_vm_temp.qcow2 20G
+
+resize the partitions
+
+	virt-resize --expand /dev/vda2 --LV-expand /dev/vg_main/lv_root centos_vm.qcow2 centos_vm_temp.qcow2
+
+make a backup of the VM for any evenience:
+
+	mv -f centos_vm.qcow2 centos_vm.backup.qcow2
+
+sparsify image
+
+	virt-sparsify --format qcow2 --compress centos_vm_temp.qcow2 centos_vm.qcow2
+
+remove the resized image
+
+	rm -f centos_vm_temp.qcow2
+
+set file ownership
+
+	chown qemu:qemu centos_vm.qcow2
+
+restart the virtual machine
+
+	virsh start centos_vm
+
+if the new image works fine, then we can delete the backup image:
+
+	rm -rf centos_vm.backup.qcow2
 
 ## Useful commands
 
@@ -156,54 +267,6 @@ Create a new guest using this image with virt-install --import
 	--os-variant=rhel6 \
 	--disk path=/var/lib/libvirt/images/centos6x-vm-gpt-gold-copy2-master-backed.qcow2 \
 	--import
-
-### Resizing a virtual machine image
-
-The following instructions shows how to resize a virtual machine image:
-
-shut the virtual machine down
-
-	virsh shutdown centos_vm
-	
-change directory
-
-	cd /var/lib/libvirt/images
-
-clone VM image
-
-	cp -f centos_vm.qcow2 centos_vm_temp.qcow2
-
-resize the cloned image (i.e. 20 GB)
-
-	qemu-img resize centos_vm_temp.qcow2 20G
-
-resize the partitions
-
-	virt-resize --expand /dev/vda2 --LV-expand /dev/vg_main/lv_root centos_vm.qcow2 centos_vm_temp.qcow2
-
-make a backup of the VM for any evenience:
-
-	mv -f centos_vm.qcow2 centos_vm.backup.qcow2
-
-sparsify image
-
-	virt-sparsify --format qcow2 --compress centos_vm_temp.qcow2 centos_vm.qcow2
-
-remove the resized image
-
-	rm -f centos_vm_temp.qcow2
-
-set file ownership
-
-	chown qemu:qemu centos_vm.qcow2
-
-restart the virtual machine
-
-	virsh start centos_vm
-
-if the new image works fine, then we can delete the backup image:
-
-	rm -rf centos_vm.backup.qcow2
 
 
 ### Adding VNC graphics 

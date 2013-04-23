@@ -3,7 +3,7 @@
 #==============================================================================+
 # File name   : centoskvm.sh
 # Begin       : 2013-04-18
-# Last Update : 2013-04-22
+# Last Update : 2013-04-23
 # Version     : 1.0.0
 #
 # Description : Shell script used to generate a CentOS Virtual Machine image.

@@ -85,22 +85,22 @@ virsh shutdown $VMNAME
 cd /var/lib/libvirt/images
 
 # clone VM image
-cp -f $VMFILE $VMFILE.qcow2
+cp -f $VMFILE $VMFILE.tmp
 
 # resize the cloned image (i.e. 20 GB)
-qemu-img resize $VMFILE.qcow2 $VMSIZE
+qemu-img resize $VMFILE.tmp $VMSIZE
 
 # resize the partitions
-virt-resize --expand /dev/vda2 --LV-expand /dev/vg_main/lv_root $VMFILE $VMFILE.qcow2
+virt-resize --expand /dev/vda2 --LV-expand /dev/vg_main/lv_root $VMFILE $VMFILE.tmp
 
 # make a backup of the VM for any evenience:
 mv -f $VMFILE $VMFILE.backup
 
 # sparsify image
-virt-sparsify --format qcow2 --compress $VMFILE.qcow2 $VMFILE
+virt-sparsify --format qcow2 --compress $VMFILE.tmp $VMFILE
 
 # remove the resized image
-rm -f $VMFILE.qcow2
+rm -f $VMFILE.tmp
 
 # set file ownership
 chown qemu:qemu $VMFILE
