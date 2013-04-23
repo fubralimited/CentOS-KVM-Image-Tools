@@ -54,11 +54,11 @@ If you don't, then install them with...
 The kickstarts directory contains different Kickstart configuration files to create Virtual Machine images.
 
 
-## Scripts
+## Shell scripts
 
 ### centoskvm.sh
 
-The centoskvm.sh shell script that you can use to create a master CentOS virtual machine in an unattended mode.
+The centoskvm.sh shell script allows you to create a master CentOS virtual machine in an unattended mode.
 This command will perform a text-based installation of the latest CentOS release directly from a public HTTP mirror without requiring any installation CD/DVD.
 A virtual machine will be created with the given settings, and output from the installation will be sent to your terminal rather than a VNC session.
 
@@ -141,55 +141,52 @@ Once the centoskvm.sh scripts completes, the requested image file will be availa
 
 ### resizevm.sh
 
-The resizevm.sh allows you to resize a VM created with the centoskvm.sh script. The resizing process is detailed below.
+The resizevm.sh allows you to resize a VM created with the centoskvm.sh script. The resizing process is detailed below:
 
-#### Resizing a virtual machine image
-
-The following instructions shows how to resize a virtual machine image:
-
-shut the virtual machine down
+#### 1. shut the virtual machine down
 
 	virsh shutdown centos_vm
 	
-change directory
+#### 2. change directory
 
 	cd /var/lib/libvirt/images
 
-clone VM image
+#### 3. clone VM image
 
 	cp -f centos_vm.qcow2 centos_vm_temp.qcow2
 
-resize the cloned image (i.e. 20 GB)
+#### 4. resize the cloned image (i.e. 20 GB)
 
 	qemu-img resize centos_vm_temp.qcow2 20G
 
-resize the partitions
+#### 5. resize the partitions
 
 	virt-resize --expand /dev/vda2 --LV-expand /dev/vg_main/lv_root centos_vm.qcow2 centos_vm_temp.qcow2
 
-make a backup of the VM for any evenience:
+#### 6. make a backup of the VM for any evenience:
 
 	mv -f centos_vm.qcow2 centos_vm.backup.qcow2
 
-sparsify image
+#### 7. sparsify image
 
 	virt-sparsify --format qcow2 --compress centos_vm_temp.qcow2 centos_vm.qcow2
 
-remove the resized image
+#### 8. remove the resized image
 
 	rm -f centos_vm_temp.qcow2
 
-set file ownership
+#### 9. set file ownership
 
 	chown qemu:qemu centos_vm.qcow2
 
-restart the virtual machine
+#### 10. restart the virtual machine
 
 	virsh start centos_vm
 
-if the new image works fine, then we can delete the backup image:
+#### 11. if the new image works fine, then we can delete the backup image:
 
 	rm -rf centos_vm.backup.qcow2
+
 
 ## Useful commands
 
