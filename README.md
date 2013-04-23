@@ -56,7 +56,7 @@ The kickstarts directory contains different Kickstart configuration files to cre
 
 ## Scripts
 
-The scripts directory contains the centoskvm.sh shell script that you can use to create a master CentOS virtual machine in an unattended mode.
+The centoskvm.sh shell script that you can use to create a master CentOS virtual machine in an unattended mode.
 This command will perform a text-based installation of the latest CentOS release directly from a public HTTP mirror without requiring any installation CD/DVD.
 A virtual machine will be created with the given settings, and output from the installation will be sent to your terminal rather than a VNC session.
 
@@ -78,6 +78,7 @@ Please check the centoskvm.sh script for further details and configurations.
 
 Once the centoskvm.sh scripts completes, the requested image file will be available on the /var/lib/libvirt/images directory.
 
+The resizevm.sh allows you to resize a VM created with the centoskvm.sh script. The resizing process is detailed below.
 
 ## Useful commands
 
@@ -168,10 +169,6 @@ change directory
 
 	cd /var/lib/libvirt/images
 
-make a backup of the VM for any evenience:
-
-	cp -f centos_vm.qcow2 centos_vm.backup.qcow2
-
 clone VM image
 
 	cp -f centos_vm.qcow2 centos_vm_temp.qcow2
@@ -184,9 +181,9 @@ resize the partitions
 
 	virt-resize --expand /dev/vda2 --LV-expand /dev/vg_main/lv_root centos_vm.qcow2 centos_vm_temp.qcow2
 
-remove the original OS image
+make a backup of the VM for any evenience:
 
-	rm -f centos_vm.qcow2
+	mv -f centos_vm.qcow2 centos_vm.backup.qcow2
 
 sparsify image
 

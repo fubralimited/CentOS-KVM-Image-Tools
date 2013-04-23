@@ -66,6 +66,8 @@ KICKSTART="centos6x-vm-gpt-selinux.cfg"
 # VM image file extension
 EXT="qcow2"
 
+echo "\nGenerating VM ...\n"
+
 # create image file
 virt-install \
 --name $IMGNAME \
@@ -105,6 +107,8 @@ mv $IMGNAME-sparsified.$EXT $IMGNAME.$EXT
 
 # set correct ownership for the VM image file
 chown qemu:qemu $IMGNAME.$EXT
+
+echo "\nProcess Completed.\nUse the 'virt start $IMGNAME' command to start the newly created VM.\n"
 
 #==============================================================================+
 # END OF FILE
