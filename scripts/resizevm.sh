@@ -70,7 +70,7 @@ if [ -z "$2" ]; then
 	exit 1
 fi
 
-echo "\nResizing VM ...\n"
+echo "Resizing VM ..."
 
 # name of the image
 VMSIZE=$2
@@ -111,7 +111,7 @@ virsh start $VMNAME
 # if the new image works fine, then we can delete the backup image:
 #rm -rf $VMFILE.backup
 
-echo "\nProcess Completed.\nPlease try the new image and delete the backup file if everything is OK.\n"
+echo "Process Completed. Please try the new image and delete the backup file if everything is OK."
 
 #==============================================================================+
 # END OF FILE
