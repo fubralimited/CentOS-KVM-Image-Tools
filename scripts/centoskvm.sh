@@ -88,7 +88,7 @@ virt-install \
 cd /var/lib/libvirt/images/
 
 # reset, unconfigure a virtual machine so clones can be made
-virt-sysprep --no-selinux-relabel -a $IMGNAME.$EXT
+virt-sysprep -a $IMGNAME.$EXT
 
 # SELinux: relabelling all filesystem
 guestfish --selinux -i $IMGNAME.$EXT <<EOF
