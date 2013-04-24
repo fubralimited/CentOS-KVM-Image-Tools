@@ -113,7 +113,7 @@ Please check the Kickstart configuration file source code for more information a
 #### 2. virt-sysprep : reset, unconfigure the virtual machine so clones can be made
 
 	cd /var/lib/libvirt/images/
-	virt-sysprep --format qcow2 --selinux-relabel -a centos_vm.qcow2
+	virt-sysprep --format qcow2 --no-selinux-relabel -a centos_vm.qcow2
 
 
 #### 3. guestfish : used for SElinux relabelling of the entire filesystem
