@@ -88,7 +88,7 @@ virt-install \
 cd /var/lib/libvirt/images/
 
 # reset, unconfigure a virtual machine so clones can be made
-virt-sysprep -a $IMGNAME.$EXT
+virt-sysprep --format qcow2 --selinux-relabel -a $IMGNAME.$EXT
 
 # SELinux: relabelling all filesystem
 guestfish --selinux -i $IMGNAME.$EXT <<EOF
@@ -97,7 +97,7 @@ sh 'restorecon -Rv /'
 EOF
 
 # make a virtual machine disk sparse
-virt-sparsify --format qcow2 --compress $IMGNAME.$EXT $IMGNAME-sparsified.$EXT
+virt-sparsify --compress --convert qcow2 --format qcow2 $IMGNAME.$EXT $IMGNAME-sparsified.$EXT
 
 # remove original image
 rm -rf $IMGNAME.$EXT

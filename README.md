@@ -113,7 +113,7 @@ Please check the Kickstart configuration file source code for more information a
 #### 2. virt-sysprep : reset, unconfigure the virtual machine so clones can be made
 
 	cd /var/lib/libvirt/images/
-	virt-sysprep -a centos_vm.qcow2
+	virt-sysprep --format qcow2 --selinux-relabel -a centos_vm.qcow2
 
 
 #### 3. guestfish : used for SElinux relabelling of the entire filesystem
@@ -126,7 +126,7 @@ Please check the Kickstart configuration file source code for more information a
 
 #### 4. virt-sparsify : make a virtual machine disk sparse
 
-	virt-sparsify --format qcow2 --compress centos_vm.qcow2 centos_vm-sparsified.qcow2
+	virt-sparsify --compress --convert qcow2 --format qcow2 centos_vm.qcow2 centos_vm-sparsified.qcow2
 	
 rename file and set the correct ownership
 
