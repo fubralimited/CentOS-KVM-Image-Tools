@@ -3,7 +3,7 @@
 #==============================================================================+
 # File name   : centoskvm.sh
 # Begin       : 2013-04-18
-# Last Update : 2013-04-24
+# Last Update : 2013-04-25
 # Version     : 1.0.0
 #
 # Description : Shell script used to generate a CentOS Virtual Machine image.
@@ -88,7 +88,7 @@ virt-install \
 cd /var/lib/libvirt/images/
 
 # reset, unconfigure a virtual machine so clones can be made
-virt-sysprep --format qcow2 --no-selinux-relabel -a $IMGNAME.$EXT
+virt-sysprep --format=qcow2 --no-selinux-relabel -a $IMGNAME.$EXT
 
 # SELinux: relabelling all filesystem
 guestfish --selinux -i $IMGNAME.$EXT <<EOF
