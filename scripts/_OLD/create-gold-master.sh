@@ -6,8 +6,8 @@ if [ `whoami` != root ]; then
    exit 1
 fi
 
-read -p "***** Warning! ****** 
-This script will remove all MAC address and hostname references from network scripts, and reset the SSH host keys and DHCP lease history. 
+read -p "***** Warning! ******
+This script will remove all MAC address and hostname references from network scripts, and reset the SSH host keys and DHCP lease history.
 Do you wish to continue? "
 
 if [[ $REPLY =~ ^[Yy]$ ]]

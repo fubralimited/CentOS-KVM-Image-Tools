@@ -82,7 +82,7 @@ virt-install \
 --extra-args="ks=file:/$KICKSTART text console=tty0 utf8 console=ttyS0,115200" \
 --disk path=/var/lib/libvirt/images/$IMGNAME.$EXT,size=10,bus=virtio,format=qcow2 \
 --force \
---noreboot 
+--noreboot
 
 # change directory
 cd /var/lib/libvirt/images/
@@ -102,7 +102,7 @@ virt-sparsify --compress --convert qcow2 --format qcow2 $IMGNAME.$EXT $IMGNAME-s
 # remove original image
 rm -rf $IMGNAME.$EXT
 
-# rename sparsified 
+# rename sparsified
 mv $IMGNAME-sparsified.$EXT $IMGNAME.$EXT
 
 # set correct ownership for the VM image file
