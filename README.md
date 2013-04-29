@@ -38,21 +38,48 @@ DESCRIPTION:
 
 This project contains some simple tools, instructions and Kickstart configuration files to assist with creating CentOS KVM virtual machines.
 
+## Installation
+
 The following guide assumes you have virtualization tools such as virt-install, libguestfs and virt-sparsify installed.
 
-If you don't, then install them with...
+If you don't, then install them:
 
     yum groupinstall "Virtualization Tools"
     yum install virt-manager libvirt libvirt-python python-virtinst virt-top libguestfs-tools
     reboot
-    
-...or the equivalent command for your distribution of choice.
+
+You must download this project for the unattended creation script to work correctly:
+
+	git clone git://github.com/fubralimited/CentOS-KVM-Image-Tools.git
 
 
 ## Kickstart configuration scripts
 
-The kickstarts directory contains different Kickstart configuration files to create Virtual Machine images.
+The Kickstarts directory contains different Kickstart configuration files to create Virtual Machine images.
 
+* The centos6x-vm-gpt-selinux.cfg is the Kickstart file to create a CentOS 64bit Virtual Machine guest.
+* The centos6x-i386-vm-gpt-selinux.cfg is the Kickstart file to create a CentOS 32bit Virtual Machine guest.
+* The centos6x-hypervisor-gpt-selinux.cfg is the Kickstart file to create a CentOS 64bit Virtual Machine hypervisor.
+
+All the Kickstart files contain the following common packages. In addition all the Kickstart configuration files enable the SELinux and the firewall, and do not install the graphic environment X.
+* @core
+* @server-policy
+* vim-enhanced
+* nano
+* aide
+
+The CentOS hypervisor Kickstart is the same as the 64bit version, but with the following additional packages included.
+* kvm
+* virt-manager
+* libvirt
+* libvirt-python
+* python-virtinst
+* virt-top
+* libguestfs-tools
+
+The default password for the root user is changeme1122 (as defined on the Kickstart configuration file).
+
+For additional information about specific settings please view the comments in the files.
 
 ## Shell scripts
 
@@ -66,10 +93,10 @@ A virtual machine will be created with the given settings, and output from the i
 
 Where centos_vm is the name of the virtual machine we want to create.
 
-By default this script uses the centos6x-vm-gpt-selinux.cfg kickstart configuration file.
+By default this script uses the centos6x-vm-gpt-selinux.cfg Kickstart configuration file.
 Fell free to create new configuration files and clone the centoskvm.sh script to set different parameters.
 
-The main operation performed by the centoskvm.sh script are:
+The main operations of the centoskvm.sh script are as follows in case you wish to complete the process manually.
 
 #### 1. virt-install : creating the VM using virt-install
 
@@ -84,7 +111,7 @@ The script uses the following parameters to create the VM:
 	--os-type=linux \
 	--os-variant=rhel6 \
 	--location=http://mirror.catn.com/pub/centos/6/os/x86_64 \
-	--initrd-inject=../kickstarts/centos6x-vm-gpt-selinux.cfg \
+	--initrd-inject=../Kickstarts/centos6x-vm-gpt-selinux.cfg \
 	--extra-args="ks=file:/centos6x-vm-gpt-selinux.cfg text console=tty0 utf8 console=ttyS0,115200" \
 	--disk path=/var/lib/libvirt/images/centos_vm.qcow2,size=10,bus=virtio,format=qcow2 \
 	--force \
@@ -102,7 +129,7 @@ Is it also possible to pass the Kickstart file as URL:
 	--os-type=linux \
 	--os-variant=rhel6 \
 	--location=http://mirror.catn.com/pub/centos/6/os/x86_64 \
-	--extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/kickstarts/centos6x-vm-gpt-selinux.cfg text console=tty0 utf8 console=ttyS0,115200" \
+	--extra-args="ks=http://fubralimited.github.com/CentOS-KVM-Image-Tools/Kickstarts/centos6x-vm-gpt-selinux.cfg text console=tty0 utf8 console=ttyS0,115200" \
 	--disk path=/var/lib/libvirt/images/centos_vm.qcow2,size=10,bus=virtio,format=qcow2 \
 	--force \
 	--noreboot 
@@ -118,10 +145,14 @@ Please check the Kickstart configuration file source code for more information a
 
 #### 3. guestfish : used for SElinux relabelling of the entire filesystem
 
-	guestfish --selinux -i $IMGNAME.$EXT <<EOF
+	guestfish --selinux -i centos_vm.qcow2 <<EOF
 	sh load_policy
 	sh 'restorecon -Rv /'
 	EOF
+
+or in one line:
+
+	guestfish --selinux -i centos_vm.qcow2 <<<'sh "load_policy && restorecon -R -v /"'
 
 
 #### 4. virt-sparsify : make a virtual machine disk sparse
@@ -141,7 +172,16 @@ Once the centoskvm.sh scripts completes, the requested image file will be availa
 
 ### resizevm.sh
 
-The resizevm.sh allows you to resize a VM created with the centoskvm.sh script. The resizing process is detailed below:
+The resizevm.sh allows you to resize in place a VM created with the centoskvm.sh script.
+Please be aware that the resizevm.sh script assumes details about storage volumes that rely on the centoskvm.sh having be used.
+
+A virtual machine will be resized with the given settings.
+
+	sh resizevm.sh centos_vm 20G
+
+Where centos_vm is the name of the virtual machine we want to resize and 20G is the new size.
+
+The main operations of the resizevm.sh script are as follows in case you wish to complete the process manually.
 
 #### 1. shut the virtual machine down
 
@@ -187,7 +227,6 @@ The resizevm.sh allows you to resize a VM created with the centoskvm.sh script. 
 
 	rm -rf centos_vm.backup.qcow2
 
-
 ## Useful commands
 
 List all available virtual machines:
@@ -207,7 +246,7 @@ Connect to a virtual machine's console:
     virsh console centos_vm
 
 To exit the console press CTRL + ]
-The default user is root and the default password is changeme1122 (as defined on the kickstart configuration file).
+The default password for the root user is changeme1122 (as defined on the Kickstart configuration file).
 
 If you want completely delete the virtual machine, you can do so with:
 
@@ -215,13 +254,12 @@ If you want completely delete the virtual machine, you can do so with:
     virsh undefine centos_vm
     rm /var/lib/libvirt/images/centos_vm.qcow2
 
-
 For additional documentation on virt-tools please consult the website: http://virt-tools.org/
 
 ## Other Distributions
 
-The kickstart directory contains configuration files for other distributions.
-To generate a gold master image for this distributions is advisable to clone the centoskvm.sh script and change the virt-install parameters accordingly (location and kickstart file).
+The Kickstart directory contains configuration files for other distributions.
+To generate a gold master image for this distributions is advisable to clone the centoskvm.sh script and change the virt-install parameters accordingly (location and Kickstart file).
 NOTE: When building Fedora VMs, a useful tip for switching Anaconda shells is to use CTRL+b then the screen number.
 
 ## Working with images
@@ -297,11 +335,10 @@ If you are connected over SSH, make sure you have X11 installed on your client m
 
 ### Create and attach a virtual storage resize
 
-create an XML configuration file for the extra storage device (edit the correct target device):
+Create an XML configuration file for the extra storage device (edit the correct target device):
 	
 	cd /var/lib/libvirt/images
 	nano extra_storage.xml
-
 
 	<disk type='file' device='disk'>
 		<driver name='qemu' type='qcow2' cache='none'/>
@@ -311,15 +348,15 @@ create an XML configuration file for the extra storage device (edit the correct 
 	</disk>
 
 
-create empty image
+Create empty image
 
 	qemu-img create -f qcow2 extra_storage.qcow2 20G
 
-set image file ownership
+Set image file ownership
 
 	chown qemu:qemu extra_storage.qcow2
 
-attach the storage device to the centos_vm
+Attach the storage device to the centos_vm
 
 	virsh attach-device --persistent centos_vm extra_storage.xml 
 
@@ -328,39 +365,39 @@ attach the storage device to the centos_vm
 
 Start and login into the VM, then:
 
-label disk (vdb is the target device as defined on the XML file)
+Label disk (vdb is the target device as defined on the XML file)
 
 	parted /dev/vdb mklabel gpt
 
-resize the partition
+Resize the partition
 
 	parted /dev/vdb -s -a optimal mkpart primary 1 20G
 
-align-check
+Align-check
 
 	parted /dev/vdb align-check optimal 1
 
-initialize the partition for use by LVM
+Initialize the partition for use by LVM
 	
 	pvcreate /dev/vdb1
 
-create volume group
+Create volume group
 
 	vgcreate vg_name /dev/vdb1
 
-create logical volume
+Create logical volume
 
 	lvcreate -l 100%FREE -n lv_name /dev/vg_name
 
-create filesystem
+Create filesystem
 
 	mkfs.ext4 /dev/vg_name/lv_name
 
-create mount point
+Create mount point
 
 	mkdir -p /storage
 
-add entry to fstab
+Add entry to fstab
 
 	mount src=/dev/mapper/vg_name-lv_name name=/storage fstype=ext4 opts=defaults,noatime,nodiratime state=mounted
 
