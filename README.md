@@ -272,7 +272,7 @@ Copy the image
     
 Create a new guest using this image with virt-install --import
 
-	virt-install
+	virt-install \
 	--name "centos6x-vm-gpt-gold-copy1-nobacking" \
 	--cpu host \
 	--vcpus 1 \
