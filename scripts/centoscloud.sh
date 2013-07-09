@@ -1,16 +1,16 @@
 #!/bin/sh
 
 #==============================================================================+
-# File name   : centoskvm.sh
-# Begin       : 2013-04-18
-# Last Update : 2013-04-25
+# File name   : centoscloud.sh
+# Begin       : 2013-07-09
+# Last Update : 2013-07-09
 # Version     : 1.0.0
 #
-# Description : Shell script used to generate a CentOS Virtual Machine image.
+# Description : Shell script used to generate a CentOS cloud image.
 #
 # Website     : https://github.com/fubralimited/CentOS-KVM-Image-Tools
 #
-# Author: Nicola Asuni
+# Author: Mark Sutton
 #
 # (c) Copyright:
 #               Fubra Limited
@@ -61,7 +61,7 @@ fi
 IMGNAME=$1
 
 # default kickstart file
-KICKSTART="centos6x-vm-gpt-selinux.cfg"
+KICKSTART="CentOS-6.4-x86_64-cloud.cfg"
 
 # VM image file extension
 EXT="qcow2"
@@ -71,7 +71,7 @@ echo "Generating VM ..."
 # create image file
 virt-install \
 --name $IMGNAME \
---ram 512 \
+--ram 1024 \
 --cpu host \
 --vcpus 1 \
 --nographics \
