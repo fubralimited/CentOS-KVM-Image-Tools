@@ -80,6 +80,7 @@ virt-install \
 --location=http://mirror.catn.com/pub/centos/6/os/x86_64 \
 --initrd-inject=../kickstarts/$KICKSTART \
 --extra-args="ks=file:/$KICKSTART text console=tty0 utf8 console=ttyS0,115200" \
+--network bridge=virbr0 \
 --disk path=/var/lib/libvirt/images/$IMGNAME.$EXT,size=10,bus=virtio,format=qcow2 \
 --force \
 --noreboot
