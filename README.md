@@ -7,7 +7,7 @@ CentOS KVM Image Tools - README
 
 + Release date: 2013-04-23
 
-+ Author: Nicola Asuni, Paul Maunders, Mark Sutton
++ Author: Nicola Asuni, Paul Maunders, Mark Sutton, Damion Parry
 
 + Copyright (2012-2013):
 
